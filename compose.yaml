@@ -1,0 +1,6 @@
+services:
+  img:
+    build: .
+    container_name: node_psql
+    ports: 
+      - 5700:5800
