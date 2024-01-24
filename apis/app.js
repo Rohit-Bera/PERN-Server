@@ -58,7 +58,7 @@ const signup = async (request, response) => {
       const { username, email, password } = request.body;
 
       const result = await pool.query(
-        "insert into users(username , email , password ) values($1 , $2 , $3)",
+        "insert into users(username , email , password ) values($1 , $2 , $3) returning *",
         [username, email, password]
       );
       console.log("result: ", result);
@@ -106,7 +106,7 @@ const postList = async (request, response) => {
     // const task = "something";
 
     const result = await pool.query(
-      "insert into tasks(date , task , userid ) values($1 , $2 , $3)",
+      "insert into tasks(date , task , userid ) values($1 , $2 , $3) returning *",
       [date, task, id]
     );
     console.log("result: ", result);
@@ -126,7 +126,7 @@ const putList = async (request, response) => {
     const id = request.params.id;
 
     const result = await pool.query(
-      "update tasks set date = $1 , task = $2 where id = $3",
+      "update tasks set date = $1 , task = $2 where id = $3 returning *",
       [date, task, id]
     );
 
