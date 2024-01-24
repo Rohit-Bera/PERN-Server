@@ -9,13 +9,16 @@ const { Pool } = require("pg");
 const user = process.env.USER;
 const db = process.env.DATABASE;
 const pass = process.env.PG_PASSWORD;
+const host = process.env.PG_HOST;
+const port = process.env.PG_PORT;
 
 // database connection
 const pool = new Pool({
+  host: host,
   user: user,
   database: db,
   password: pass,
-  port: process.env.PG_PORT,
+  port: port,
 });
 
 //user
