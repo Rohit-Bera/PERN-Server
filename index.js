@@ -37,7 +37,7 @@ const setupDB = async (request, response, next) => {
       "create table users(id serial primary key, username text , email text , password text)"
     );
     const createTask = await pool.query(
-      "create table tasks(id serial primary key, task text , userid int , foreign key(userid) references users(id) )"
+      "create table tasks(id serial primary key, date text ,task text , userid int , foreign key(userid) references users(id) )"
     );
   }
 };

@@ -1,6 +1,6 @@
 // todolist=> create table users(id serial primary key, username text , email text , password text);
 // CREATE TABLE
-// todolist=> create table tasks(id serial primary key, task text , userid int , foreign key(userid) references users(id) );
+// todolist=> create table tasks(id serial primary key, date text,task text , userid int , foreign key(userid) references users(id) );
 // CREATE TABLE
 require("dotenv").config();
 
@@ -51,7 +51,7 @@ const signup = async (request, response) => {
       const { username, email, password } = request.body;
 
       const result = await pool.query(
-        "insert into users(username , email , password ) values($1 , $2 , $3) returning *",
+        "insert into users(username , email , password ) values($1 , $2 , $3)",
         [username, email, password]
       );
       console.log("result: ", result);
@@ -99,7 +99,7 @@ const postList = async (request, response) => {
     // const task = "something";
 
     const result = await pool.query(
-      "insert into tasks(date , task , userid ) values($1 , $2 , $3) returning *",
+      "insert into tasks(date , task , userid ) values($1 , $2 , $3)",
       [date, task, id]
     );
     console.log("result: ", result);
@@ -119,7 +119,7 @@ const putList = async (request, response) => {
     const id = request.params.id;
 
     const result = await pool.query(
-      "update tasks set date = $1 , task = $2 where id = $3 returning *",
+      "update tasks set date = $1 , task = $2 where id = $3",
       [date, task, id]
     );
 
