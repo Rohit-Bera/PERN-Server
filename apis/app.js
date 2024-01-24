@@ -28,6 +28,13 @@ const login = async (request, response) => {
     console.log("password: ", password);
     console.log("email: ", email);
 
+    await pool.query(
+      "CREATE TABLE IF NOT EXISTS users (id serial primary key, username text , email text , password text)"
+    );
+    await pool.query(
+      "CREATE TABLE IF NOT EXISTS tasks(id serial primary key, date text,task text , userid int , foreign key(userid) references users(id) )"
+    );
+
     const result = await pool.query(
       "select * from users where email=$1 and password=$2",
       [email, password]
