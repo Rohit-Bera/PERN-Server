@@ -112,7 +112,9 @@ const postList = async (request, response) => {
     console.log("result: ", result);
 
     result &&
-      response.status(200).json({ message: "record added successfully!" });
+      response
+        .status(200)
+        .json({ message: "record added successfully!", rows: result.rows });
   } catch (err) {
     console.log("err: ", err);
     response.status(500).json({ message: "something went wrong!", error: err });
@@ -131,7 +133,9 @@ const putList = async (request, response) => {
     );
 
     result &&
-      response.status(200).json({ message: "record updated successfully!" });
+      response
+        .status(200)
+        .json({ message: "record updated successfully!", rows: result.rows });
   } catch (err) {
     console.log("err: ", err);
     response.status(500).json({ message: "something went wrong!", error: err });
@@ -145,7 +149,12 @@ const deleteList = async (request, response) => {
     const result = pool.query("delete from tasks where id = $1", [id]);
 
     (result &&
-      response.status(200).json({ message: "record deleted successfully!" })) ||
+      response
+        .status(200)
+        .json({
+          message: "record deleted successfully!",
+          rows: result.rows,
+        })) ||
       response.status(400).json({ message: "record not deleted!" });
   } catch (err) {
     console.log("err: ", err);
