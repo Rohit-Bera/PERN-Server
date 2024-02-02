@@ -32,7 +32,7 @@ const login = async (request, response) => {
       "CREATE TABLE IF NOT EXISTS users (id serial primary key, username text , email text , password text)"
     );
     await pool.query(
-      "CREATE TABLE IF NOT EXISTS tasks(id serial primary key, date text,task text , userid int , foreign key(userid) references users(id) )"
+      "CREATE TABLE IF NOT EXISTS tasks(id serial primary key, date text,task text, userid int , foreign key(userid) references users(id) )"
     );
 
     const result = await pool.query(
@@ -92,6 +92,55 @@ const getList = async (request, response) => {
     records
       ? response.status(200).json({ rows: records })
       : response.status(404).json({ error: "records not found" });
+  } catch (err) {
+    console.log("error: ", err);
+    response.status(500).json({ message: "something went wrong!", error: err });
+  }
+};
+
+const getHistory = async (request, response) => {
+  try {
+    const { limit, offset, date, id } = request.query;
+
+    const rows = await pool.query("select * from tasks where userid=$1", [id]);
+    const entries = rows.rowCount;
+    console.log("entries: ", entries);
+
+    if (date) {
+      const result = await pool.query(
+        "select * from tasks where userid=$1 and date=$2 limit $3 offset $4",
+        [id, date, limit, offset]
+      );
+
+      const records = result.rows;
+      console.log("records: ", records);
+
+      const rows = {
+        records,
+        rowCount: entries,
+      };
+
+      records
+        ? response.status(200).json({ rows })
+        : response.status(404).json({ error: "records not found" });
+    } else {
+      const result = await pool.query(
+        "select * from tasks where userid = $1 limit $2  offset $3",
+        [id, limit, offset]
+      );
+
+      const records = result.rows;
+      console.log("records: ", records);
+
+      const rows = {
+        records,
+        rowCount: entries,
+      };
+
+      records
+        ? response.status(200).json({ rows })
+        : response.status(404).json({ error: "records not found" });
+    }
   } catch (err) {
     console.log("error: ", err);
     response.status(500).json({ message: "something went wrong!", error: err });
@@ -166,4 +215,5 @@ module.exports = {
   deleteList,
   login,
   signup,
+  getHistory,
 };

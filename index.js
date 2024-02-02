@@ -25,6 +25,7 @@ const {
   deleteList,
   login,
   signup,
+  getHistory,
 } = require("./apis/app");
 
 //users
@@ -36,6 +37,8 @@ app.get("/getList/:id", getList); // get user list
 app.post("/postList/:id", postList); // post user list
 app.put("/putList/:id", putList); // updtae user list
 app.delete("/deleteList/:id", deleteList); // delete user list
+
+app.get("/getHistory", getHistory); // get History
 
 const server = http.createServer(app);
 
